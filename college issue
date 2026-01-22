@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Problems - College Issue Reporter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen font-sans text-slate-800 bg-[url('https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center bg-fixed bg-no-repeat">
+
+    <!-- Dark Overlay -->
+    <div class="fixed inset-0 bg-slate-900/60 z-0"></div>
+
+    <div class="relative z-10 flex flex-col min-h-screen">
+        
+        <!-- Navbar -->
+        <header class="glass sticky top-0 z-40 border-b border-white/20 shadow-sm">
+            <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="bg-brand-600 text-white w-10 h-10 rounded-lg flex items-center justify-center shadow-lg">
+                        <i class="fas fa-graduation-cap text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-slate-800 leading-tight uppercase tracking-tight">Student Problems</h1>
+                        <p class="text-xs text-slate-500 font-medium">Issue Reporting Portal</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow container mx-auto px-4 py-8 flex items-center justify-center">
+            <div class="w-full max-w-xl">
+                
+                <!-- Page 1: Reporting Form -->
+                <div id="formPage" class="fade-in">
+                    <!-- Notification Banner (Local Errors) -->
+                    <div id="notification" class="hidden mb-6 p-4 rounded-xl shadow-lg transform transition-all duration-500 scale-95 opacity-0">
+                        <div class="flex items-center gap-3">
+                            <div id="notifIcon" class="text-2xl"></div>
+                            <div>
+                                <h4 id="notifTitle" class="font-bold"></h4>
+                                <p id="notifMessage" class="text-sm opacity-90"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Form Card -->
+                    <div class="glass rounded-2xl shadow-2xl overflow-hidden border border-white/50">
+                        <!-- Card Header -->
+                        <div class="bg-gradient-to-r from-brand-800 to-brand-600 p-8 text-white text-center relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                            <h2 class="text-3xl font-bold relative z-10">Report an Issue</h2>
+                        </div>
+
+                        <form id="grievanceForm" class="p-8 space-y-6" onsubmit="handleSubmit(event)">
+                            <!-- Branch & Category Selection -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wide ml-1">Branch</label>
+                                    <div class="relative group">
+                                        <i class="fas fa-code-branch absolute left-4 top-3.5 text-slate-400 group-focus-within:text-brand-500 transition-colors"></i>
+                                        <select name="branch" required 
+                                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white/50 focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none transition-all appearance-none cursor-pointer">
+                                            <option value="" disabled selected>Select Branch</option>
+                                            <option value="CSE">Computer Science (CSE)</option>
+                                            <option value="ECE">Electronics (ECE)</option>
+                                            <option value="EEE">Electrical (EEE)</option>
+                                            <option value="MECH">Mechanical (MECH)</option>
+                                            <option value="CIVIL">Civil Engineering</option>
+                                            <option value="IT">Information Tech (IT)</option>
+                                            <option value="AI_DS">AI & Data Science</option>
+                                        </select>
+                                        <i class="fas fa-chevron-down absolute right-4 top-4 text-xs text-slate-400 pointer-events-none"></i>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wide ml-1">Issue Type</label>
+                                    <div class="relative group">
+                                        <i class="fas fa-exclamation-circle absolute left-4 top-3.5 text-slate-400 group-focus-within:text-brand-500 transition-colors"></i>
+                                        <select name="category" required 
+                                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white/50 focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none transition-all appearance-none cursor-pointer">
+                                            <option value="" disabled selected>Select Category</option>
+                                            <option value="Academic">Academics / Faculty</option>
+                                            <option value="Infrastructure">Lab / Infrastructure</option>
+                                            <option value="Hostel">Hostel / Mess</option>
+                                            <option value="Transport">Bus / Transport</option>
+                                            <option value="Library">Library</option>
+                                            <option value="Harassment">Ragging / Harassment</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <i class="fas fa-chevron-down absolute right-4 top-4 text-xs text-slate-400 pointer-events-none"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wide ml-1">Detailed Description</label>
+                                <textarea name="description" required rows="4" 
+                                    class="w-full p-4 rounded-xl border border-slate-200 bg-white/50 focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none transition-all resize-none" 
+                                    placeholder="Please describe the issue in detail..."></textarea>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" id="submitBtn" 
+                                class="w-full bg-gradient-to-r from-brand-600 to-brand-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-500/30 hover:shadow-brand-500/50 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex justify-center items-center gap-2 group">
+                                <span class="uppercase tracking-widest">Submit</span>
+                                <i class="fas fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Page 2: Thank You Page (Hidden by default) -->
+                <div id="thankYouPage" class="hidden fade-in text-center">
+                    <div class="glass p-10 rounded-2xl shadow-2xl border border-white/50 space-y-6">
+                        <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                            <i class="fas fa-check text-4xl"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-slate-800">Submission Successful!</h2>
+                        <div class="space-y-4">
+                            <p class="text-xl text-slate-600 font-medium">
+                                Thank you for your cooperation.
+                            </p>
+                            <p class="text-slate-500 bg-slate-50 p-4 rounded-lg italic border border-slate-100">
+                                "We will inform to their respective HOD'S"
+                            </p>
+                        </div>
+                        <button onclick="location.reload()" class="mt-8 text-brand-600 font-bold hover:text-brand-800 transition-colors flex items-center justify-center gap-2 mx-auto">
+                            <i class="fas fa-arrow-left"></i>
+                            Submit another problem
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="p-6 text-center">
+            <p class="text-white/60 text-xs uppercase tracking-widest">
+                &copy; 2024 College Grievance Cell | Secure & Confidential
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function handleSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const originalBtnContent = btn.innerHTML;
+            const form = document.getElementById('grievanceForm');
+            // Check for saved URL in localStorage (Developer setup)
+            const scriptUrl = localStorage.getItem('googleSheetUrl');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+            const formData = new FormData(form);
+
+            // Handle Actual Submission
+            if (scriptUrl) {
+                fetch(scriptUrl, { method: 'POST', body: formData })
+                    .then(() => {
+                        showThankYouPage();
+                    })
+                    .catch(() => {
+                        showNotification('error', 'Error', 'Failed to submit. Check connection.');
+                        btn.disabled = false;
+                        btn.innerHTML = originalBtnContent;
+                    });
+            } else {
+                // Simulation for Demo purposes if no URL is connected
+                setTimeout(() => {
+                    showThankYouPage();
+                    console.log("Demo Mode: In a real scenario, connect your Google Sheet URL via localStorage.setItem('googleSheetUrl', 'YOUR_URL')");
+                }, 1500);
+            }
+        }
+
+        function showThankYouPage() {
+            document.getElementById('formPage').classList.add('hidden');
+            document.getElementById('thankYouPage').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showNotification(type, title, message) {
+            const notif = document.getElementById('notification');
+            const icon = document.getElementById('notifIcon');
+            const titleEl = document.getElementById('notifTitle');
+            const msgEl = document.getElementById('notifMessage');
+
+            notif.className = 'mb-6 p-4 rounded-xl shadow-lg transform transition-all duration-500 flex items-center';
+            if (type === 'error') {
+                notif.classList.add('bg-red-100', 'text-red-800', 'border', 'border-red-200');
+                icon.innerHTML = '<i class="fas fa-exclamation-circle text-red-600"></i>';
+            }
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+            notif.classList.remove('hidden');
+            setTimeout(() => notif.classList.remove('scale-95', 'opacity-0'), 10);
+        }
+    </script>
+</body>
+</html>
